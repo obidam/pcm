@@ -33,7 +33,7 @@ function varargout = reduce_dimensions(X,THRESHOLD,varargin)
 %
 % PCM is Profile Classification Modelling
 % Copyright (C) 2015-2017, OBIDAM Developpers
-% For more information, see http://framagit.org/obidam/pcm
+% For more information, see http://github.com/obidam/pcm
 % Created: 2015-01-21 (G. Maze, Ifremer, Laboratoire d'Océanographie Physique et Spatiale)
 
 % This file is part of OBIDAM/PCM.

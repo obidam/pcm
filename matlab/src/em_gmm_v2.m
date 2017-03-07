@@ -31,7 +31,7 @@ function [post prob acti log_likelihood main mixGM errlogGM mix0 errlogKM] = em_
 % 	
 % PCM is Profile Classification Modelling
 % Copyright (C) 2016-2017, OBIDAM Developpers
-% For more information, see http://framagit.org/obidam/pcm
+% For more information, see http://github.com/obidam/pcm
 % Created: 2015-11-26 (G. Maze, Ifremer, Laboratoire d'Océanographie Physique et Spatiale)
 % Revised: 2016-04-13 (G. Maze) Moved COVARTYPE into the optional arguments
 

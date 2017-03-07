@@ -22,7 +22,7 @@ function [POST, LABELS, ACTI, PROB, Xr] = pcmpredict(MODEL,DPT,X,varargin)
 %
 % PCM is Profile Classification Modelling
 % Copyright (C) 2016-2017, OBIDAM Developpers
-% For more information, see http://framagit.org/obidam/pcm
+% For more information, see http://github.com/obidam/pcm
 % Created: 2016-04-14 (G. Maze, Ifremer, Laboratoire d'Océanographie Physique et Spatiale)
 % Revised: 2016-12-09 (G. Maze) Fixed a but when interpolating a single profile
 

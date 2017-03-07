@@ -33,7 +33,7 @@ function Xn = pcollecnorm(ARG1,Xi,varargin)
 %
 % PCM is Profile Classification Modelling
 % Copyright (C) 2016-2017, OBIDAM Developpers
-% For more information, see http://framagit.org/obidam/pcm
+% For more information, see http://github.com/obidam/pcm
 % Created: 2016-04-15 (G. Maze, Ifremer, Laboratoire d'Océanographie Physique et Spatiale)
 
 % This file is part of OBIDAM/PCM.

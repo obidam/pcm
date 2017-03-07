@@ -5,7 +5,7 @@ function varargout = demo_gmm_v2(varargin)
 %
 % PCM is Profile Classification Modelling
 % Copyright (C) 2016-2017, OBIDAM Developpers
-% For more information, see http://framagit.org/obidam/pcm
+% For more information, see http://github.com/obidam/pcm
 % Created: 2016-03-08 (G. Maze, Ifremer, Laboratoire d'Océanographie Physique et Spatiale)
 % Revised: 2017-01-18 (G. Maze) Fixed a bug with em_gmm_v2 call
 

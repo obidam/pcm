@@ -6,7 +6,7 @@
 %
 % PCM is Profile Classification Modelling
 % Copyright (C) 2016-2017,  OBIDAM Developpers
-% For more information, see http://framagit.org/obidam/pcm
+% For more information, see http://github.com/obidam/pcm
 % 
 % 	classpermute                             - Permute class order in a Profile Classification Model (PCM)
 % 	covarrotate                              - Rotate a squared covariance matrix

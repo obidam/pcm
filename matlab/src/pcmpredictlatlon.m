@@ -25,7 +25,7 @@ function [POST, LABELS, ACTI, PROB] = pcmpredictlatlon(GMMMASK,MODEL,DPT,FIELD,v
 % 
 % PCM is Profile Classification Modelling
 % Copyright (C) 2015-2017, OBIDAM Developpers
-% For more information, see http://framagit.org/obidam/pcm
+% For more information, see http://github.com/obidam/pcm
 % Created: 2015-10-31 ((G. Maze, Ifremer, Laboratoire d'Océanographie Physique et Spatiale)
 
 % This file is part of OBIDAM/PCM.
