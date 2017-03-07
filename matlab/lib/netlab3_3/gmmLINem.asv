@@ -1,0 +1,166 @@
+function [mix, options, errlog] = gmmLINem(mix, x,W, options)
+%GMMEM	EM algorithm for Gaussian mixture model.
+%
+%	Description
+%	[MIX, OPTIONS, ERRLOG] = GMMEM(MIX, X, OPTIONS) uses the Expectation
+%	Maximization algorithm of Dempster et al. to estimate the parameters
+%	of a Gaussian mixture model defined by a data structure MIX. The
+%	matrix X represents the data whose expectation is maximized, with
+%	each row corresponding to a vector.    The optional parameters have
+%	the following interpretations.
+%
+%	OPTIONS(1) is set to 1 to display error values; also logs error
+%	values in the return argument ERRLOG. If OPTIONS(1) is set to 0, then
+%	only warning messages are displayed.  If OPTIONS(1) is -1, then
+%	nothing is displayed.
+%
+%	OPTIONS(3) is a measure of the absolute precision required of the
+%	error function at the solution. If the change in log likelihood
+%	between two steps of the EM algorithm is less than this value, then
+%	the function terminates.
+%
+%	OPTIONS(5) is set to 1 if a covariance matrix is reset to its
+%	original value when any of its singular values are too small (less
+%	than MIN_COVAR which has the value eps).   With the default value of
+%	0 no action is taken.
+%
+%	OPTIONS(14) is the maximum number of iterations; default 100.
+%
+%	The optional return value OPTIONS contains the final error value
+%	(i.e. data log likelihood) in OPTIONS(8).
+%
+%	See also
+%	GMM, GMMINIT
+%
+
+%	Copyright (c) Ian T Nabney (1996-2001)
+
+debug = 0;
+
+
+% Check that inputs are consistent
+errstring = consist(mix, 'gmm', x);
+if ~isempty(errstring)
+  error(errstring);
+end
+
+[ndata, xdim] = size(x);
+
+%% pre-compute wtw
+wtw = zeros(ndata,9);
+for j = 1:mix.ncentres
+  for i=1:ndata
+    wtwi = w(i,:)' * w(i,:);
+  wtw(i,:) = wtwi(:)';
+end
+
+% Sort out the options
+if (options(14))
+  niters = options(14);
+else
+  niters = 100;
+end
+
+display = options(1);
+store = 0;
+if (nargout > 2)
+  store = 1;	% Store the error values to return them
+  errlog = zeros(1, niters);
+end
+test = 0;
+if options(3) > 0.0
+  test = 1;	% Test log likelihood for termination
+end
+
+check_covars = 0;
+if options(5) >= 1
+  if display >= 0
+    disp('check_covars is on');
+  end
+  check_covars = 1;	% Ensure that covariances don't collapse
+  MIN_COVAR = eps;	% Minimum singular value of covariance matrix
+  init_covars = mix.covars;
+end
+
+% Main loop of algorithm
+for n = 1:niters
+  
+  % Calculate posteriors based on old parameters
+  [post, act] = gmmLINpost(mix, x,w);
+  
+  % Calculate error value if needed
+  if (display | store | test)
+    prob = act*(mix.priors)';
+    % Error value is negative log likelihood of data
+    e = - sum(log(prob));
+    if store
+      errlog(n) = e;
+    end
+    if display > 0
+      fprintf(1, 'Cycle %4d  Error %11.6f\n', n, e);
+    end
+    if test
+      if (n > 1 & abs(e - eold) < options(3))
+        options(8) = e;
+        return;
+      else
+        eold = e;
+      end
+    end
+  end
+  
+  % Adjust the new estimates for the parameters
+  new_pr = sum(post, 1);
+  new_c = post' * x;
+  
+  % Now move new estimates to old parameter vectors
+  %% priors
+  mix.priors = new_pr ./ ndata;
+  
+  %% "mean" model
+  wAtY = zeros(3,1);
+  for j = 1:mix.ncentres
+    wAtA = reshape( sum( (post(:,j)*ones(1,9)) .* wtw , 1) ,[3 3]);
+    wAtY = (post(:,j) .* x)' * w;
+% $$$     wAtA = reshape( sum( ((post(:,j) > 0.3)*ones(1,9)) .* wtw , 1) ,[3 3]);  %% pour verification
+% $$$     wAtY = ((post(:,j) > 0.3) .* x)' * w;
+% $$$     wAtA2 = zeros(3,3);
+% $$$     for i = 1:ndata
+% $$$       wAtA2 = wAtA2 + post(i,j)* w(i,:)'*w(i,:);
+% $$$     end
+% $$$     A = max((wAtA(:)-wAtA2(:)).^2)
+    
+    mix.centres(j,:) = pinv(wAtA) * wAtY'; 
+  
+    if debug
+      T2 = 0:0.1:max(w(:,1));
+      TS = 1:12;
+      yn = mix.centres(j,3);
+      yn = yn +  mix.centres(j,1)*repmat(T2',1,length(TS));
+      yn = yn +  mix.centres(j,2)*repmat(TS,length(T2),1);
+      clf(figure(100));
+      figure(100);
+      hold on; grid on;
+      indPlot = find( post(:,j) > 0.3 );
+      plot3(w(indPlot,1),w(indPlot,2),x(indPlot),'r*');
+      mesh(T2,TS,yn');
+      view(3);
+      pause;
+    end
+  
+  end
+  
+  %% covariance
+  for j = 1:mix.ncentres
+    diffs = x - (mix.centres(j, :) * w')';
+    %v(j)  = (post(:,j).* diffs)'*diffs; %% modif rfablet 27/11/2009
+    v(j,:)  = (post(:,j).* diffs)'*diffs; %% modif rfablet 27/11/2009
+  end
+  mix.covars = v./new_pr;
+end
+
+options(8) = -sum(log(gmmLINprob(mix, x, w)));
+if (display >= 0)
+  disp(maxitmess);
+end
+  
