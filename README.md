@@ -14,10 +14,10 @@ You can send emails for registration or information requests at:
 Checkout our 1st dataset release from North-Atlantic Argo data: 
     http://doi.org/10.17882/47106
 
-Download the Matlab toolbox from the repo:
+Download the toolbox from the repo:
 
-    git clone https://framagit.org/obidam/pcm.git
+    git clone https://github.com/obidam/pcm.git
     
-and [get started following the embryonic user manual](https://framagit.org/obidam/pcm/wikis/home)
+and [get started following the embryonic user manual](https://github.com/obidam/pcm/wiki/User-Manual)
     
 We are currently developping a Python version of the toolbox that will be made available here soon !    
