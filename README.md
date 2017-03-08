@@ -18,6 +18,6 @@ Download the toolbox from the repo:
 
     git clone https://github.com/obidam/pcm.git
     
-and [get started following the embryonic user manual](https://github.com/obidam/pcm/wiki/User-Manual)
+and [get started following the embryonic user manual for the Matlab component](https://github.com/obidam/pcm/wiki/PCM-Matlab-Toolbox-User-Manual)
     
 We are currently developping a Python version of the toolbox that will be made available here soon !    
