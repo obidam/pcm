@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/84186493.svg)](https://zenodo.org/badge/latestdoi/84186493)
+
 Profile Classification Modelling (PCM)
 ======================================
 
