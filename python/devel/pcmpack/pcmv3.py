@@ -3,7 +3,7 @@
 """
 
 Properties and methods similar to v2
-But methods return xarray rather than arrays
+But methods return xarray rather than numpy arrays
 
 Created on 2017/09/26
 @author: gmaze
@@ -295,6 +295,8 @@ class PCM:
             X : array-like, shape (N_p=n_samples, N_z=n_features)
                 List of N_z-dimensional data profile. Each row
                 corresponds to a single profile.
+            Z: array-like, shape (N_z=n_features,)
+                Vertical axis of profiles
 
             Returns
             -------
@@ -323,10 +325,22 @@ class PCM:
         """Estimate PCM parameters and predict classes
            
             Train a PCM and predict classes in a single step
-           
-            This method adds two properties to the PCM instance:
-                LABELS: The label (class prediction)
-                llh: The log likelihood of the model with regard to new data
+
+           This method add these properties to the PCM data property:
+              llh: The log likelihood of the model with regard to new data
+
+            Parameters
+            ----------
+            X : array-like, shape (N_p=n_samples, N_z=n_features)
+                List of N_z-dimensional data profile. Each row
+                corresponds to a single profile.
+            Z: array-like, shape (N_z=n_features,)
+                Vertical axis of profiles
+
+            Returns
+            -------
+            labels : xarray.DataArray, shape (N_p = n_samples)
+                Component labels.
         """
         # PRE-PROCESSING:
         X = self.preprocessing(X, Z)
@@ -352,10 +366,18 @@ class PCM:
            This method adds these properties to the PCM instance:
                llh: The log likelihood of the model with regard to new data
 
+            Parameters
+            ----------
+            X : array-like, shape (N_p=n_samples, N_z=n_features)
+                List of N_z-dimensional data profile. Each row
+                corresponds to a single profile.
+            Z: array-like, shape (N_z=n_features,)
+                Vertical axis of profiles
+
             Returns
             -------
-            resp : array, shape (n_samples, n_components)
-                Returns the probability each Gaussian (state) in
+            post : array, shape (n_samples, n_components)
+                Returns the probability of each Gaussian (state) in
                 the model given each sample.
         """
         if (not self._trained):
@@ -380,10 +402,10 @@ class PCM:
 
             Usage A:
                 pcm.quant(X, labels=L, q=[0.05,0.5,0.95])
-                    This will use labels L do compute component percentiles of X
+                    This usage will use labels L to compute component percentiles of X
             Usage B:
                 pcm.quant(X, Z=DEPTH, q=[0.05,0.5,0.95])
-                    This will classify data in X and then compute percentiles
+                    This usage will classify data X at depth Z and then compute percentiles.
                     Be careful, if you re-fit a model, you may not end up with something coherent
                     from previous calculation of labels and posteriors, as components will show
                     up in different orders
@@ -393,6 +415,8 @@ class PCM:
             X : array-like, shape (N_p=n_samples, N_z=n_features)
                 List of N_z-dimensional data profile. Each row
                 corresponds to a single profile.
+            Z: array-like, shape (N_z=n_features,)
+                Vertical axis of profiles
             labels: array, shape (N_p=n_samples,)
                 Component labels.
             q: float in the range of [0,1] (or sequence of floats), shape (n_quantiles,1)
@@ -403,11 +427,11 @@ class PCM:
             Q : xarray.DataArray, shape (K, n_quantiles, N_z=n_features)
 
         """
-        if labels == None:
+        if labels is None:
             labels = self.fit_predict(X,Z)
-        elif Z == None:
+        elif Z is None:
             if not self._trained:
-                raise ValueError("Can't compute quant without a fitted model !")
+                raise ValueError("Can't compute quantiles without a fitted model !")
 
         #
         if (not isinstance(X,xr.core.dataarray.DataArray)):

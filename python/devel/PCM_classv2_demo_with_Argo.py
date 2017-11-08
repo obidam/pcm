@@ -46,7 +46,7 @@ Qn.attrs['units'] = ("Norm[%s]")%(Xunit)
 
 # ----------------
 # Create map of labels:
-fig,ax,proj = init_map([-82,0,0,65],dxtick=10,dytick=5)
+fig,ax,proj = init_map([-82,0,0,65], dxtick=10, dytick=5)
 
 # Add scatter plot
 cmap = cmap_discretize(plt.cm.Paired,K)

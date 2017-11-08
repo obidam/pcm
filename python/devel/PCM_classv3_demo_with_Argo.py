@@ -16,7 +16,7 @@ K = 8
 # Compression level for the dimensionality reduction
 maxvar = 99.9 # in %
 
-# Create a PCM instance with same vertical axis as Argo data:
+# Create and configure a PCM instance with same vertical axis as Argo data:
 
 # Usage: pcm(K, DPTmodel, scaling=1, reduction=1, classif='gmm', COVARTYPE='full', maxvar=99.9, verb=False)
 m = pcm(K, Z, maxvar=maxvar)
@@ -35,16 +35,18 @@ labels = m.predict(X, Z)
 # Compute posterior probability of each class:
 post = m.predict_proba(X, Z)
 
-# Compute quantiles (Typical profiles of classes)
+# Compute quantiles from real units profiles (Typical profiles of classes)
 Q = m.quant(X, labels=labels, verb=True)
 Q.attrs['units'] = Xunit
 
-# Compute quantiles on Normalized data:
-xn = m._scaler.transform(m._interpoler.fit_transform(X, Z))
+# Compute quantiles from normalized profiles:
+xn = m._scaler.transform(m._interpoler.fit_transform(X, Z)) # We may want a nicer method to access this
 Qn = m.quant(xn, labels=labels, verb=True)
 Qn.attrs['units'] = ("Norm[%s]")%(Xunit)
 
+
 # ----------------
+
 # Create map of labels:
 fig,ax,proj = init_map([-82,0,0,65],dxtick=10,dytick=5)
 
@@ -78,7 +80,7 @@ ax.set_title("POSTERIORS FOR COMPONENT k=%i"%(k),fontsize=18)
 plt.tight_layout()
 plt.show()
 
-# Plot quantiles
+# Plot quantiles from real units profiles
 fig, ax = plt.subplots(nrows=1, ncols=m.K, figsize=(2*m.K,4), dpi=80, facecolor='w', edgecolor='k',sharey='row')
 cmap = cmap_discretize(plt.cm.Paired,m.K)
 xlim = np.array([0.9*Q.min(), 1.1*Q.max()])
@@ -86,7 +88,7 @@ for k in range(m.K):
     Qk = Q.sel(components=k)
     for q in Qk['quantile']:
         Qkq = Qk.sel(quantile=q)
-        ax[k].plot(Qkq.values.T,Z,label=("%0.2f")%(Qkq['quantile']))
+        ax[k].plot(Qkq.values.T, Z, label=("%0.2f")%(Qkq['quantile']))
     ax[k].set_title(("Component: %i")%(k),color=cmap(k))
     ax[k].legend(loc='lower right')
     ax[k].set_xlim(xlim)
@@ -97,25 +99,26 @@ for k in range(m.K):
 plt.tight_layout()
 
 
-# Plot quantiles
+# Plot quantiles from normalized profiles
 fig, ax = plt.subplots(nrows=1, ncols=m.K, figsize=(2*m.K,4), dpi=80, facecolor='w', edgecolor='k',sharey='row')
 cmap = cmap_discretize(plt.cm.Paired,m.K)
 xlim = np.array([-4,4])
 for k in range(m.K):
-    Qk = Qn.sel(components=k)
-    for q in Qk['quantile']:
-        Qkq = Qk.sel(quantile=q)
-        ax[k].plot(Qkq.values.T,Z,label=("%0.2f")%(Qkq['quantile']))
+    ax[k].vlines(0, Z.min(), Z.max())
     ax[k].set_title(("Component: %i")%(k),color=cmap(k))
-    ax[k].legend(loc='lower right')
     ax[k].set_xlim(xlim)
     ax[k].set_ylim(np.array([Z.min(), Z.max()]))
     ax[k].set_xlabel(Qn.units)
     if k==0: ax[k].set_ylabel('feature dimension')
     ax[k].grid(True)
+    Qk = Qn.sel(components=k)
+    for q in Qk['quantile']:
+        Qkq = Qk.sel(quantile=q)
+        ax[k].plot(Qkq.values.T,Z,label=("%0.2f")%(Qkq['quantile']))
+    ax[k].legend(loc='lower right')
 plt.tight_layout()
 
-
+# Plot all quantiles profiles
 fig, ax = plt.subplots(nrows=2, ncols=m.K, figsize=(2*m.K,8), dpi=80, facecolor='w', edgecolor='k',sharey='row')
 cmap = cmap_discretize(plt.cm.Paired,m.K)
 
