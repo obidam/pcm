@@ -1,0 +1,14 @@
+
+python/\.idea/
+
+python/\.spyproject/
+
+python/devel/\.idea/
+
+python/devel/\.ipynb_checkpoints/
+
+python/devel/pcmpack/junk/
+
+*.log
+
+*.tmproj
