@@ -12,3 +12,5 @@ python/devel/pcmpack/junk/
 *.log
 
 *.tmproj
+
+\.idea/

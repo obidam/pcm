@@ -1,4 +1,8 @@
-[![DOI](https://zenodo.org/badge/84186493.svg)](https://zenodo.org/badge/latestdoi/84186493)
+[![DOI](https://img.shields.io/badge/DOI--Article-10.1016%2Fj.pocean.2016.12.008-blue.svg)](http://dx.doi.org/10.1016/j.pocean.2016.12.008)
+[![](https://img.shields.io/badge/matlab->R2016b-orange.svg)]()
+[![DOI](https://img.shields.io/badge/DOI--Matlab-10.5281%2Fzenodo.400018-blue.svg)](http://dx.doi.org/10.5281/zenodo.400018)
+[![](https://img.shields.io/badge/xarray-0.10.0-orange.svg)](http://xarray.pydata.org/en/stable/)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 Profile Classification Modelling (PCM)
 ======================================
@@ -16,10 +20,23 @@ It is being developed at Ifremer/LOPS with collaboration with Telecom Bretagne s
 Checkout our 1st dataset release from North-Atlantic Argo data: 
     http://doi.org/10.17882/47106
 
-Download the toolbox from the repo:
+## Matlab toolbox
+This is the original code for PCM.
+    
+[You can get started following this help page](https://github.com/obidam/pcm/blob/master/matlab/README.md)
+
+@gmaze will provide help to use it, but won't maintain the code. Contact us if you want to contribute !
+
+## Python package
+We are currently developing a Python package to work with PCM easily. 
+
+Before the initial release, you can [check out the
+classic PCM workflow on this notebook](https://github.com/obidam/pcm/blob/master/python/PCM-workflow-classic-demo.ipynb).
+
+## Install
+
+Clone the toolbox from the repo:
 
     git clone https://github.com/obidam/pcm.git
     
-and [get started following the embryonic user manual for the Matlab component](https://github.com/obidam/pcm/wiki/PCM-Matlab-Toolbox-User-Manual)
-    
-We are currently developping a Python version of the toolbox that will be made available here soon !    
+As of now, both the Matlab and Python PCM codes are under the same repository, this will probably change in the future.

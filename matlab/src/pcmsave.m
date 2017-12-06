@@ -1,7 +1,7 @@
-function varargout = savePCM(NCFILE,PCM)
-% savePCM Save a Profile Classification Model (PCM) into a netcdf file
+function varargout = pcmsave(NCFILE,PCM)
+% pcmsave Save a Profile Classification Model (PCM) into a netcdf file
 %
-% [] = savePCM(NCFILE,PCM)
+% [] = pcmsave(NCFILE,PCM)
 %
 % Save PCM Profile Classification Model structure into a netcdf file NCFILE
 %
