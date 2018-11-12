@@ -14,3 +14,10 @@ python/devel/pcmpack/junk/
 *.tmproj
 
 \.idea/
+
+docs/_build
+docs/_static
+docs/_templates
+python/devel/
+
+docs/

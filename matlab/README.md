@@ -11,7 +11,8 @@ The last version of the toolbox from the git repository:
 ```
 
 ## Dependencies
-At this time, the PCM Matlab toolbox relies on the [Netlab Neural Network Software, version 3.3](http://www.aston.ac.uk/eas/research/groups/ncrg/resources/netlab/). But it is included in the PCM distribution under the `src` folder, so you don't have to install it.
+At this time, the PCM Matlab toolbox relies on the [Netlab Neural Network Software, version 3.3](http://www.aston.ac.uk/eas/research/groups/ncrg/resources/netlab/). 
+But it is included in the PCM distribution under the `lib` folder, so you don't have to install it.
 
 ## Install
 Simply ensure that you have the PCM Matlab toolbox (`src`) and its dependencies (`lib`) folders on your Matlab path !
