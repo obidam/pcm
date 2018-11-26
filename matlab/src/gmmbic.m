@@ -43,7 +43,9 @@ n = n + K*Nd;
 % Add Nb of Gaussian covariance matrix elements:
 switch mix.covar_type
 	case 'full'
-		n = n + K*Nd*(Nd-1)/2;
+		% n = n + K*Nd*(Nd-1)/2; % Initial version
+		n = n + K*Nd*(Nd+1)/2; % Fixed version, following Scikit-learn at:
+		% https://github.com/scikit-learn/scikit-learn/blob/55bf5d9/sklearn/mixture/gaussian_mixture.py#L719
 	case 'diag'
 		n = n + K*Nd;
 	case 'spherical'
