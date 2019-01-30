@@ -194,8 +194,8 @@ MODEL.covarTYPE = COVARTYPE;
 MODEL.mix = mix;
 %MODEL.llh = llh; % This is wrong because em_gmm_v2 return in fact the negative llh
 MODEL.llh = -llh; % Fix sign issue
-MODEL.score = -llh/size(Xr,2); % This is the sample-mean llh, compatible with scikit-learn "score" per-sample average 
-							   % log-likelihood of the given data X
+MODEL.score = -llh/Np; % This is the sample-mean llh, compatible with scikit-learn "score" per-sample average 
+                       % log-likelihood of the given data X
 MODEL = orderfields(MODEL);
 
 varargout(1) = {MODEL};
