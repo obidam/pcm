@@ -188,17 +188,18 @@ if doREDUCE
 %	MODEL.L = L; % L [1,Nc] : Principal component variances, ie eigenvalues of the covariance matrix.
 end% if 
 
-% Trained GMM:
+% Format output structure with MODEL information:
 MODEL.K = K;
 MODEL.covarTYPE = COVARTYPE;
 MODEL.mix = mix;
 %MODEL.LLH = nllh; % This is wrong because em_gmm_v2 return the negative nllh
 MODEL.LLH = -nllh; % Fix sign 
-MODEL.score = -nllh/Np; % This is the sample-mean nllh, compatible with scikit-learn "score" per-sample average 
+MODEL.score = -nllh/Np; % This is the sample-mean llh, compatible with scikit-learn "score" per-sample average 
                        % log-likelihood of the given data X
 MODEL.BIC = gmmbic(mix,nllh,Xr);
 MODEL = orderfields(MODEL);
 
+% Output
 varargout(1) = {MODEL};
 varargout(2) = {Xi};
 varargout(3) = {Xn};
