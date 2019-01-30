@@ -192,8 +192,7 @@ end% if
 MODEL.K = K;
 MODEL.covarTYPE = COVARTYPE;
 MODEL.mix = mix;
-MODEL.LLH = llh;
-
+MODEL.llh = llh;
 MODEL = orderfields(MODEL);
 
 varargout(1) = {MODEL};
