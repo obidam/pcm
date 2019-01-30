@@ -155,7 +155,7 @@ end% switch
 
 %- Training: 
 % Train a GMM with Netlab throughout our customized workflow
-[~,~,~,llh,~,mix] = em_gmm_v2(Xr,K,'covartype',COVARTYPE);
+[~,~,~,nllh,~,mix] = em_gmm_v2(Xr,K,'covartype',COVARTYPE,'initializationMode','kmean');
 
 %- Outputs
 % Un-used fields are simply not added to the model structure
@@ -192,10 +192,11 @@ end% if
 MODEL.K = K;
 MODEL.covarTYPE = COVARTYPE;
 MODEL.mix = mix;
-%MODEL.llh = llh; % This is wrong because em_gmm_v2 return in fact the negative llh
-MODEL.llh = -llh; % Fix sign issue
-MODEL.score = -llh/Np; % This is the sample-mean llh, compatible with scikit-learn "score" per-sample average 
+%MODEL.LLH = nllh; % This is wrong because em_gmm_v2 return the negative nllh
+MODEL.LLH = -nllh; % Fix sign 
+MODEL.score = -nllh/Np; % This is the sample-mean nllh, compatible with scikit-learn "score" per-sample average 
                        % log-likelihood of the given data X
+MODEL.BIC = gmmbic(mix,nllh,Xr);
 MODEL = orderfields(MODEL);
 
 varargout(1) = {MODEL};

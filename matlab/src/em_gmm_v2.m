@@ -1,4 +1,4 @@
-function [post prob acti log_likelihood main mixGM errlogGM mix0 errlogKM] = em_gmm_v2(matrix,number_classes,varargin)
+function [post prob acti neg_log_likelihood main mixGM errlogGM mix0 errlogKM] = em_gmm_v2(matrix,number_classes,varargin)
 % em_gmm_v2 (active) Train a GMM model with EM algorithm and KMean initialization.
 %
 % [POST PROB ACTI LLH LABELS MIX ERRLOG MIXKMEAN ERRLOGKMEAN] = em_gmm_v2(DATA,K,[PAR,VAL]) 
@@ -22,7 +22,7 @@ function [post prob acti log_likelihood main mixGM errlogGM mix0 errlogKM] = em_
 % 	POST: Posterior probabilities
 % 	PROB: Mixture probabilities
 % 	ACTI: Component probabilities
-% 	LLH: Log likelihood of the model
+% 	NLLH: Negative Log likelihood of the model
 % 	LABELS: Class labels attributed to data
 % 	MIX: The Netlab GMM structure
 % 	ERRLOG: Log of the model LLH during training iterations
@@ -207,7 +207,7 @@ end% switch
 options = foptions;
 options(1)  = 0;		% Prints out error values.
 %options(3)  = 0;		% Test log likelihood for termination if options(3) is not null
-options(3)  = 1e-6;		% Test log likelihood for termination (llh rate of change)
+options(3)  = 1e-6;		% Test log likelihood for termination (nllh rate of change)
 options(5)  = check_covar; % Ensure that covariances don't collapse
 options(14) = NiterGM;		% Number of iterations.
 options(19) = 0; % Debug by plot in live EM iterations
@@ -215,9 +215,9 @@ options(19) = 0; % Debug by plot in live EM iterations
 %-- Training
 for ir = 1 : length(mix0)
 	[mixGM(ir), opt, errlogGM(:,ir)] = gmmem(mix0(ir), matrix', options, [], []);
-	llh(ir) = opt(8); % -sum(log(gmmprob(mix, x)));
+	nllh(ir) = opt(8); % -sum(log(gmmprob(mix, x)));
 end% for ir
-irbestGM = find(llh==min(llh));
+irbestGM = find(nllh==min(nllh));
 if debug & length(irbestGM)>1
 	disp('Found more than one GMM with the same minimal error');
 end% if
@@ -259,7 +259,7 @@ end% if
 irbestGM = irbestGM(1);
 mixGM = mixGM(irbestGM);
 errlogGM = errlogGM(:,irbestGM);
-log_likelihood = llh(irbestGM);
+neg_log_likelihood = nllh(irbestGM);
 
 %- Compute other usefull metrics for outputs
 post = gmmpost(mixGM,matrix');
