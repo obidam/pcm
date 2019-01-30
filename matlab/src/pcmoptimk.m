@@ -10,7 +10,7 @@ function varargout = pcmoptimk(NIND,DATA,DPT,MODE,varargin)
 % 	Use the known PCM to pre-process DATA.
 % 
 % [Kbest, BIClist] = pcmoptimk(NIND,DATA,DPT,'blind',[PAR,VAL]) 
-% 	The entire data set DATA is 
+% 	The entire data set DATA is new
 %
 % REQUIRED INPUTS:
 % 	NIND (integer): The number of independent profiles to consider
@@ -114,9 +114,9 @@ for irun = 1 : NENS
 		k  = KLIST(itest);
 		Xr = DATAr(:,ipreg(randperm(length(ipreg),NIND)));
 		try			
-			[post, prob, acti, llh, labels, mix, errlog, ~, errlogKM] = ...
+			[post, prob, acti, nllh, labels, mix, errlog, ~, errlogKM] = ...
 				em_gmm_v2(Xr,k,TRNOPT{:});
-			[B(itest,irun) B1(itest,irun) B2(itest,irun) N(itest,irun)] = gmmbic(mix,llh,Xr);
+			[B(itest,irun) B1(itest,irun) B2(itest,irun) N(itest,irun)] = gmmbic(mix,nllh,Xr);
 		catch
 			B(itest,irun)  = NaN;
 			B1(itest,irun) = NaN;
