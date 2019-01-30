@@ -196,8 +196,8 @@ MODEL.mix = mix;
 MODEL.llh = -llh; % Fix sign issue
 MODEL.score = -llh/Np; % This is the sample-mean llh, compatible with scikit-learn "score" per-sample average 
                        % log-likelihood of the given data X
-MODEL = orderfields(MODEL);
 
+MODEL = orderfields(MODEL);
 varargout(1) = {MODEL};
 varargout(2) = {Xi};
 varargout(3) = {Xn};
